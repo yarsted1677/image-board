@@ -40,6 +40,29 @@ export default function Home() {
                     strategy="afterInteractive"
             />
 
+			<Script
+                    id="atoptions-setup"
+                    type="text/javascript"
+                    strategy="afterInteractive"
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            atOptions = {
+                                'key' : 'e751446441ee5b86993b7aaf0c991b61',
+                                'format' : 'iframe',
+                                'height' : 60,
+                                'width' : 468,
+                                'params' : {}
+                            };
+                        `,
+                    }}
+                />
+                <Script
+                    id="atoptions-script"
+                    type="text/javascript"
+                    src="https://www.highperformanceformat.com/e751446441ee5b86993b7aaf0c991b61/invoke.js"
+                    strategy="afterInteractive"
+                />
+
 			<main className={styles.main}>
 				<h1 className={styles.title}>Anime Image Board</h1>
 				<p className={styles.description}>
