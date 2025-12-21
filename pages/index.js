@@ -40,30 +40,29 @@ export default function Home() {
                     strategy="afterInteractive"
             />
 
-			<Script
-                    id="atoptions-setup"
-                    type="text/javascript"
-                    strategy="afterInteractive"
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            atOptions = {
-                                'key' : 'e751446441ee5b86993b7aaf0c991b61',
-                                'format' : 'iframe',
-                                'height' : 60,
-                                'width' : 468,
-                                'params' : {}
-                            };
-                        `,
-                    }}
-                />
-                <Script
-                    id="atoptions-script"
-                    type="text/javascript"
-                    src="https://www.highperformanceformat.com/e751446441ee5b86993b7aaf0c991b61/invoke.js"
-                    strategy="afterInteractive"
-                />
-
 			<main className={styles.main}>
+				<Script
+					id="atoptions-setup"
+					type="text/javascript"
+					strategy="afterInteractive"
+					dangerouslySetInnerHTML={{
+						__html: `
+							atOptions = {
+								'key' : 'e751446441ee5b86993b7aaf0c991b61',
+								'format' : 'iframe',
+								'height' : 60,
+								'width' : 468,
+								'params' : {}
+							};
+						`,
+					}}
+				/>
+				<Script
+					id="atoptions-script"
+					type="text/javascript"
+					src="https://www.highperformanceformat.com/e751446441ee5b86993b7aaf0c991b61/invoke.js"
+					strategy="afterInteractive"
+				/>
 				<h1 className={styles.title}>Anime Image Board</h1>
 				<p className={styles.description}>
 					Browse waifu images from various categories
@@ -73,6 +72,10 @@ export default function Home() {
 					toggleDarkMode={toggleDarkMode}
 				/>
 				
+				<Script
+					type="text/javascript"
+					src="https://pl28306509.effectivegatecpm.com/c0/2e/ee/c02eeee6cfc41e9ec80e4e8832981771.js"
+				/>
 			</main>
 		</div>
 	);
