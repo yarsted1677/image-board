@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import Script from "next/script";
 import ImageContainer from "../components/ImageContainer";
 import styles from "../styles/Home.module.css";
 
@@ -43,6 +44,20 @@ export default function Home() {
 					darkMode={darkMode}
 					toggleDarkMode={toggleDarkMode}
 				/>
+				<Script
+                    async
+                    type="application/javascript"
+                    src="https://a.magsrv.com/ad-provider.js"
+                    strategy="afterInteractive"
+                />
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                            <ins class="eas6a97888e2" data-zoneid="5806300"></ins>
+                            <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+                        `,
+                    }}
+                />
 			</main>
 		</div>
 	);
