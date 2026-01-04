@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import Head from "next/head";
 import Script from "next/script";
 import ImageContainer from "../components/ImageContainer";
+import ContentCheck from "../components/ContentCheck";
 import styles from "../styles/Home.module.css";
+
 
 export default function Home() {
 	const [darkMode, setDarkMode] = useState(true);
@@ -13,6 +15,7 @@ export default function Home() {
 
 	return (
 		<div className={`${styles.page} ${darkMode ? styles.darkMode : ""}`}>
+			<ContentCheck />
 			<Head>
 				<title>Anime Image Board</title>
 				<meta
