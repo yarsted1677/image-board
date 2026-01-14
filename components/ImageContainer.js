@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "../styles/ImageContainer.module.css";
 
 const SFW_TAGS = [
@@ -9,13 +9,16 @@ const SFW_TAGS = [
 
 const NSFW_TAGS = ["waifu", "neko", "trap", "blowjob"];
 
-const ImageContainer = ({ darkMode, toggleDarkMode }) => {
+const ImageContainer = ({ darkMode, toggleDarkMode, initialImages = [] }) => {
     const [apiType, setApiType] = useState("sfw"); // "sfw" or "nsfw"
     const [apiCategory, setApiCategory] = useState("neko"); // Default category
-    const [images, setImages] = useState([]);
-    const [fetchedImagesSet, setFetchedImagesSet] = useState(new Set());
+    const [images, setImages] = useState(initialImages);
+    const [fetchedImagesSet, setFetchedImagesSet] = useState(new Set(initialImages));
     const [loading, setLoading] = useState(false);
     const IMAGES_PER_REQUEST = 30;
+    
+    // Ref to track if it's the first render
+    const isFirstRun = useRef(true);
 
     // Fetch images from the waifu.pics API
     async function fetchMoreImages() {
@@ -56,6 +59,15 @@ const ImageContainer = ({ darkMode, toggleDarkMode }) => {
 
     // Clear images when switching type or category
     useEffect(() => {
+        // If it's the first run and we have initial images, skip the fetch
+        // ASSUMPTION: initialImages corresponds to sfw/neko (the defaults)
+        if (isFirstRun.current) {
+            isFirstRun.current = false;
+            if (initialImages.length > 0) {
+                return;
+            }
+        }
+        
         setImages([]);
         setFetchedImagesSet(new Set());
         fetchMoreImages();

@@ -6,7 +6,7 @@ import ContentCheck from "../components/ContentCheck";
 import styles from "../styles/Home.module.css";
 
 
-export default function Home({ jsonLdData}) {
+export default function Home({ jsonLdData, initialImages }) {
 	const [darkMode, setDarkMode] = useState(true);
 
 	const toggleDarkMode = () => {
@@ -77,6 +77,7 @@ export default function Home({ jsonLdData}) {
 				<ImageContainer
 					darkMode={darkMode}
 					toggleDarkMode={toggleDarkMode}
+                    initialImages={initialImages}
 				/>
 				
 				<Script
@@ -89,6 +90,19 @@ export default function Home({ jsonLdData}) {
 }
 
 export async function getStaticProps() {
+    let initialImages = [];
+    try {
+        const response = await fetch("https://api.waifu.pics/many/sfw/neko", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: 30 }),
+        });
+        const data = await response.json();
+        initialImages = data.files || [];
+    } catch (error) {
+        console.error("Error pre-fetching images:", error);
+    }
+
     const jsonLdData = {
         "@context": "https://schema.org",
         "@graph": [
@@ -106,63 +120,33 @@ export async function getStaticProps() {
                     "@type": "ImageGallery",
                     "name": "Anime Image Gallery",
                     "description": "A collection of curated anime and waifu images.",
-                    "associatedMedia": [
-                        {
-                            "@type": "ImageObject",
-                            "contentUrl": "https://i.waifu.pics/W13nei-.jpg",
-                            "url": "https://i.waifu.pics/W13nei-.jpg",
-                            "name": "Anime Neko Girl",
-                            "description": "Cute anime neko/cat girl images",
-                            "thumbnailUrl": "https://i.waifu.pics/W13nei-.jpg"
-                        },
-                        {
-                            "@type": "ImageObject",
-                            "contentUrl": "https://i.waifu.pics/VIJYb_Z.png",
-                            "url": "https://i.waifu.pics/VIJYb_Z.png",
-                            "name": "Anime Waifu",
-                            "description": "Beautiful anime waifu artwork",
-                            "thumbnailUrl": "https://i.waifu.pics/VIJYb_Z.png"
-                        },
-                        {
-                            "@type": "ImageObject",
-                            "contentUrl": "https://i.waifu.pics/3jGQZAG.jpg",
-                            "url": "https://i.waifu.pics/3jGQZAG.jpg",
-                            "name": "Shinobu Character",
-                            "description": "Shinobu anime character images",
-                            "thumbnailUrl": "https://i.waifu.pics/3jGQZAG.jpg"
-                        }
-                    ]
+                    "associatedMedia": initialImages.map(url => ({
+                        "@type": "ImageObject",
+                        "contentUrl": url,
+                        "url": url,
+                        "name": "Anime Character Image",
+                        "description": "Anime character artwork from waifu.pics",
+                        "thumbnailUrl": url
+                    }))
                 }
             },
             {
                 "@type": "ItemList",
-                "itemListElement": [
-                    {
-                        "@type": "ListItem",
-                        "position": 1,
-                        "url": "https://i.waifu.pics/W13nei-.jpg",
-                        "name": "Anime Neko Girl"
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 2,
-                        "url": "https://i.waifu.pics/VIJYb_Z.png",
-                        "name": "Anime Waifu"
-                    },
-                    {
-                        "@type": "ListItem",
-                        "position": 3,
-                        "url": "https://i.waifu.pics/3jGQZAG.jpg",
-                        "name": "Shinobu Character"
-                    }
-                ]
+                "itemListElement": initialImages.map((url, index) => ({
+                    "@type": "ListItem",
+                    "position": index + 1,
+                    "url": url,
+                    "name": `Anime Image ${index + 1}`
+                }))
             }
         ]
     };
 
     return {
         props: {
-            jsonLdData
-        }
+            jsonLdData,
+            initialImages
+        },
+        revalidate: 3600 // Re-generate page every hour
     };
 }
