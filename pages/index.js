@@ -13,6 +13,42 @@ export default function Home() {
 		setDarkMode(!darkMode);
 	};
 
+	const jsonLdData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Anime Image Board",
+    "url": "https://image-board-indol.vercel.app",
+    "description": "Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork.",
+    "image": "https://image-board-indol.vercel.app/og-image.jpg",
+    "author": {
+        "@type": "Prismatica",
+        "name": "TopWaifu"
+    },
+    "mainEntity": {
+        "@type": "ImageGallery",
+        "associatedMedia": [
+            {
+                "@type": "ImageObject",
+                "url": "https://api.waifu.pics/sfw/neko",
+                "name": "Anime Neko Girl",
+                "description": "Cute anime neko/cat girl images"
+            },
+            {
+                "@type": "ImageObject",
+                "url": "https://api.waifu.pics/sfw/waifu",
+                "name": "Anime Waifu",
+                "description": "Beautiful anime waifu artwork"
+            },
+            {
+                "@type": "ImageObject",
+                "url": "https://api.waifu.pics/sfw/shinobu",
+                "name": "Shinobu Character",
+                "description": "Shinobu anime character images"
+            }
+        ]
+    }
+};
+
 	return (
 		<div className={`${styles.page} ${darkMode ? styles.darkMode : ""}`}>
 			<ContentCheck />
@@ -35,6 +71,10 @@ export default function Home() {
                 <meta name="twitter:description" content="Browse anime images from Waifu.pics API" />
 
 				<link rel="canonical" href="https://image-board-indol.vercel.app" />
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+				/>
                 
 			</Head>
 			<Script
