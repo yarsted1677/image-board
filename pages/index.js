@@ -83,3 +83,13 @@ export default function Home() {
 		</div>
 	);
 }
+
+export async function getStaticProps() {
+  return {
+    props: {
+      title: "Anime Image Board - Waifu & Anime Gallery",
+      description: "Browse thousands of anime images, waifu pictures, and manga artwork. Free anime gallery with daily updates.",
+      keywords: "anime images, waifu, waifu pics, anime girls, anime artwork, manga, anime gallery, anime wallpapers, nekko"
+    }
+  };
+}
