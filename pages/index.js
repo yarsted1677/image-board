@@ -91,38 +91,73 @@ export default function Home({ jsonLdData}) {
 export async function getStaticProps() {
     const jsonLdData = {
         "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Anime Image Board",
-        "url": "https://image-board-indol.vercel.app",
-        "description": "Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork.",
-        "image": "https://image-board-indol.vercel.app/og-image.png",
-        "author": {
-            "@type": "Organization",
-            "name": "TopWaifu"
-        },
-        "mainEntity": {
-            "@type": "ImageGallery",
-            "associatedMedia": [
-                {
-                    "@type": "ImageObject",
-                    "url": "https://i.waifu.pics/W13nei-.jpg",
-                    "name": "Anime Neko Girl",
-                    "description": "Cute anime neko/cat girl images"
+        "@graph": [
+            {
+                "@type": "CollectionPage",
+                "name": "Anime Image Board",
+                "url": "https://image-board-indol.vercel.app",
+                "description": "Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork.",
+                "image": "https://image-board-indol.vercel.app/og-image.png",
+                "author": {
+                    "@type": "Organization",
+                    "name": "TopWaifu"
                 },
-                {
-                    "@type": "ImageObject",
-                    "url": "https://i.waifu.pics/VIJYb_Z.png",
-                    "name": "Anime Waifu",
-                    "description": "Beautiful anime waifu artwork"
-                },
-                {
-                    "@type": "ImageObject",
-                    "url": "https://i.waifu.pics/3jGQZAG.jpg",
-                    "name": "Shinobu Character",
-                    "description": "Shinobu anime character images"
+                "mainEntity": {
+                    "@type": "ImageGallery",
+                    "name": "Anime Image Gallery",
+                    "description": "A collection of curated anime and waifu images.",
+                    "associatedMedia": [
+                        {
+                            "@type": "ImageObject",
+                            "contentUrl": "https://i.waifu.pics/W13nei-.jpg",
+                            "url": "https://i.waifu.pics/W13nei-.jpg",
+                            "name": "Anime Neko Girl",
+                            "description": "Cute anime neko/cat girl images",
+                            "thumbnailUrl": "https://i.waifu.pics/W13nei-.jpg"
+                        },
+                        {
+                            "@type": "ImageObject",
+                            "contentUrl": "https://i.waifu.pics/VIJYb_Z.png",
+                            "url": "https://i.waifu.pics/VIJYb_Z.png",
+                            "name": "Anime Waifu",
+                            "description": "Beautiful anime waifu artwork",
+                            "thumbnailUrl": "https://i.waifu.pics/VIJYb_Z.png"
+                        },
+                        {
+                            "@type": "ImageObject",
+                            "contentUrl": "https://i.waifu.pics/3jGQZAG.jpg",
+                            "url": "https://i.waifu.pics/3jGQZAG.jpg",
+                            "name": "Shinobu Character",
+                            "description": "Shinobu anime character images",
+                            "thumbnailUrl": "https://i.waifu.pics/3jGQZAG.jpg"
+                        }
+                    ]
                 }
-            ]
-        }
+            },
+            {
+                "@type": "ItemList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "url": "https://i.waifu.pics/W13nei-.jpg",
+                        "name": "Anime Neko Girl"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "url": "https://i.waifu.pics/VIJYb_Z.png",
+                        "name": "Anime Waifu"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "url": "https://i.waifu.pics/3jGQZAG.jpg",
+                        "name": "Shinobu Character"
+                    }
+                ]
+            }
+        ]
     };
 
     return {
