@@ -6,48 +6,12 @@ import ContentCheck from "../components/ContentCheck";
 import styles from "../styles/Home.module.css";
 
 
-export default function Home() {
+export default function Home({ jsonLdData}) {
 	const [darkMode, setDarkMode] = useState(true);
 
 	const toggleDarkMode = () => {
 		setDarkMode(!darkMode);
 	};
-
-	const jsonLdData = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Anime Image Board",
-    "url": "https://image-board-indol.vercel.app",
-    "description": "Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork.",
-    "image": "https://image-board-indol.vercel.app/og-image.png",
-    "author": {
-        "@type": "Organization",
-        "name": "TopWaifu"
-    },
-    "mainEntity": {
-        "@type": "ImageGallery",
-        "associatedMedia": [
-            {
-                "@type": "ImageObject",
-                "url": "https://i.waifu.pics/W13nei-.jpg",
-                "name": "Anime Neko Girl",
-                "description": "Cute anime neko/cat girl images"
-            },
-            {
-                "@type": "ImageObject",
-                "url": "https://i.waifu.pics/VIJYb_Z.png",
-                "name": "Anime Waifu",
-                "description": "Beautiful anime waifu artwork"
-            },
-            {
-                "@type": "ImageObject",
-                "url": "https://i.waifu.pics/3jGQZAG.jpg",
-                "name": "Shinobu Character",
-                "description": "Shinobu anime character images"
-            }
-        ]
-    }
-};
 
 	return (
 		<div className={`${styles.page} ${darkMode ? styles.darkMode : ""}`}>
@@ -125,11 +89,45 @@ export default function Home() {
 }
 
 export async function getStaticProps() {
-  return {
-    props: {
-      title: "Anime Image Board - Waifu & Anime Gallery",
-      description: "Browse thousands of anime images, waifu pictures, and manga artwork. Free anime gallery with daily updates.",
-      keywords: "anime images, waifu, waifu pics, anime girls, anime artwork, manga, anime gallery, anime wallpapers, nekko"
-    }
-  };
+    const jsonLdData = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Anime Image Board",
+        "url": "https://image-board-indol.vercel.app",
+        "description": "Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork.",
+        "image": "https://image-board-indol.vercel.app/og-image.png",
+        "author": {
+            "@type": "Organization",
+            "name": "TopWaifu"
+        },
+        "mainEntity": {
+            "@type": "ImageGallery",
+            "associatedMedia": [
+                {
+                    "@type": "ImageObject",
+                    "url": "https://i.waifu.pics/W13nei-.jpg",
+                    "name": "Anime Neko Girl",
+                    "description": "Cute anime neko/cat girl images"
+                },
+                {
+                    "@type": "ImageObject",
+                    "url": "https://i.waifu.pics/VIJYb_Z.png",
+                    "name": "Anime Waifu",
+                    "description": "Beautiful anime waifu artwork"
+                },
+                {
+                    "@type": "ImageObject",
+                    "url": "https://i.waifu.pics/3jGQZAG.jpg",
+                    "name": "Shinobu Character",
+                    "description": "Shinobu anime character images"
+                }
+            ]
+        }
+    };
+
+    return {
+        props: {
+            jsonLdData
+        }
+    };
 }
