@@ -29,19 +29,19 @@ export default function Home() {
         "associatedMedia": [
             {
                 "@type": "ImageObject",
-                "url": "https://api.waifu.pics/sfw/neko",
+                "url": "https://i.waifu.pics/W13nei-.jpg",
                 "name": "Anime Neko Girl",
                 "description": "Cute anime neko/cat girl images"
             },
             {
                 "@type": "ImageObject",
-                "url": "https://api.waifu.pics/sfw/waifu",
+                "url": "https://i.waifu.pics/VIJYb_Z.png",
                 "name": "Anime Waifu",
                 "description": "Beautiful anime waifu artwork"
             },
             {
                 "@type": "ImageObject",
-                "url": "https://api.waifu.pics/sfw/shinobu",
+                "url": "https://i.waifu.pics/3jGQZAG.jpg",
                 "name": "Shinobu Character",
                 "description": "Shinobu anime character images"
             }
