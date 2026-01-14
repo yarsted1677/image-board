@@ -19,7 +19,7 @@ export default function Home() {
     "name": "Anime Image Board",
     "url": "https://image-board-indol.vercel.app",
     "description": "Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork.",
-    "image": "https://image-board-indol.vercel.app/og-image.jpg",
+    "image": "https://image-board-indol.vercel.app/og-image.png",
     "author": {
         "@type": "Organization",
         "name": "TopWaifu"
