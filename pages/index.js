@@ -21,7 +21,7 @@ export default function Home() {
     "description": "Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork.",
     "image": "https://image-board-indol.vercel.app/og-image.jpg",
     "author": {
-        "@type": "Prismatica",
+        "@type": "Organization",
         "name": "TopWaifu"
     },
     "mainEntity": {
