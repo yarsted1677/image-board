@@ -138,6 +138,11 @@ export async function getStaticProps() {
                     "url": url,
                     "name": `Anime Image ${index + 1}`
                 }))
+            },
+            {
+                "@type": "WebSite",
+                "name": "Anime Image Board",
+                "url": "https://image-board-indol.vercel.app"
             }
         ]
     };
