@@ -9,9 +9,9 @@ const SFW_TAGS = [
 
 const NSFW_TAGS = ["waifu", "neko", "trap", "blowjob"];
 
-const ImageContainer = ({ darkMode, toggleDarkMode, initialImages = [] }) => {
-    const [apiType, setApiType] = useState("sfw"); // "sfw" or "nsfw"
-    const [apiCategory, setApiCategory] = useState("neko"); // Default category
+const ImageContainer = ({ darkMode, toggleDarkMode, initialImages = [], defaultCategory = "neko", defaultApiType = "sfw" }) => {
+    const [apiType, setApiType] = useState(defaultApiType);
+    const [apiCategory, setApiCategory] = useState(defaultCategory);
     const [images, setImages] = useState(initialImages);
     const [fetchedImagesSet, setFetchedImagesSet] = useState(new Set(initialImages));
     const [loading, setLoading] = useState(false);
