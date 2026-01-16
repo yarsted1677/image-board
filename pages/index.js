@@ -34,6 +34,14 @@ export default function Home({ jsonLdData, initialImages }) {
                 <meta name="twitter:title" content="Anime Image Board" />
                 <meta name="twitter:description" content="Browse anime images from Waifu.pics API" />
 
+                <meta property="og:title" content="Anime Image Board - Waifu Gallery" />
+                <meta property="og:description" content="Browse anime images from Waifu.pics API. Best nekko waifu images and anime artwork." />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://image-board-indol.vercel.app" />
+                <meta property="og:image" content="https://image-board-indol.vercel.app/og-image.png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+
 				<link rel="canonical" href="https://image-board-indol.vercel.app" />
 				<script
 					type="application/ld+json"

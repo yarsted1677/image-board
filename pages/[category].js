@@ -38,6 +38,14 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="author" content="TopWaifu" />
 
+                <meta property="og:title" content={pageTitle} />
+                <meta property="og:description" content={pageDescription} />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={`https://image-board-indol.vercel.app/${category}`} />
+                <meta property="og:image" content="https://image-board-indol.vercel.app/og-image.png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content={pageTitle} />
                 <meta name="twitter:description" content={pageDescription} />
