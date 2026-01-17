@@ -6,45 +6,29 @@ const SFW_TAGS = [
     "nom","bite","glomp","slap","kill","kick","happy","wink","poke","dance","cringe"
 ];
 
-const NSFW_TAGS = ["waifu", "neko", "trap", "blowjob"];
+const NSFW_TAGS = ["trap", "blowjob"];
 
 function generateSiteMap() {
-    const allCategories = [...new Set([...SFW_TAGS, ...NSFW_TAGS])]; // Remove duplicates
+    const allCategories = [...new Set([...SFW_TAGS, ...NSFW_TAGS])];
     
-    return `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-        <!-- Homepage -->
-        <url>
-            <loc>${SITE_URL}</loc>
-            <lastmod>${new Date().toISOString()}</lastmod>
-            <changefreq>daily</changefreq>
-            <priority>1.0</priority>
-        </url>
-        
-        ${allCategories
-            .map((category) => {
-                return `
-        <url>
-            <loc>${SITE_URL}/${category}</loc>
-            <lastmod>${new Date().toISOString()}</lastmod>
-            <changefreq>daily</changefreq>
-            <priority>0.8</priority>
-        </url>
-                `;
-            })
-            .join('')}
-    </urlset>
-    `;
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+    xml += '<url>\n<loc>' + SITE_URL + '</loc>\n<lastmod>' + new Date().toISOString() + '</lastmod>\n<changefreq>daily</changefreq>\n<priority>1.0</priority>\n</url>\n';
+    
+    allCategories.forEach((category) => {
+        xml += '<url>\n<loc>' + SITE_URL + '/' + category + '</loc>\n<lastmod>' + new Date().toISOString() + '</lastmod>\n<changefreq>daily</changefreq>\n<priority>0.8</priority>\n</url>\n';
+    });
+    
+    xml += '</urlset>';
+    return xml;
 }
 
-function SiteMap() {
-    // getServerSideProps will do the heavy lifting
-}
+function SiteMap() {}
 
 export async function getServerSideProps({ res }) {
     const sitemap = generateSiteMap();
 
-    res.setHeader('Content-Type', 'text/xml');
+    res.setHeader('Content-Type', 'text/xml; charset=utf-8');
     res.write(sitemap);
     res.end();
 
