@@ -21,8 +21,8 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
     };
 
     const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
-    const pageTitle = `${categoryTitle} Anime Images - Waifu Gallery`;
-    const pageDescription = `Browse ${categoryTitle} anime images and waifu artwork. Free ${categoryTitle} anime gallery with high-quality images.`;
+    const pageTitle = `${categoryTitle} Anime Images - ${categoryTitle} Waifu Art Gallery`;
+    const pageDescription = `Browse ${categoryTitle} anime images exclusively. High-quality ${categoryTitle} waifu artwork and ${categoryTitle} character gallery.`;
 
     return (
         <div className={`${styles.page} ${darkMode ? styles.darkMode : ""}`}>
@@ -33,7 +33,7 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
                 <meta name="google-site-verification" content="bVP-jy034Vc_iLAOUtk93hs9h2GpnJG-0cMjHh3AtmU" />
                 <link rel="icon" href="/favicon.ico" />
 
-                <meta name="keywords" content={`${category}, anime, waifu, anime images, ${category} anime, ${category} waifu, anime gallery`} />
+                <meta name="keywords" content={`${category} anime, ${category} images, ${category} waifu, ${category} art, ${category} gallery, ${category} anime pictures`} />
                 <meta name="robots" content="index, follow" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="author" content="TopWaifu" />
