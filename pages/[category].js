@@ -6,9 +6,9 @@ import ContentCheck from "../components/ContentCheck";
 import styles from "../styles/Home.module.css";
 
 const SFW_TAGS = [
-    "waifu","neko","shinobu","megumin","bully","cuddle","cry","hug","awoo","kiss",
-    "lick","pat","smug","bonk","yeet","blush","smile","wave","highfive","handhold",
-    "nom","bite","glomp","slap","kill","kick","happy","wink","poke","dance","cringe"
+    "waifu", "neko", "shinobu", "megumin", "bully", "cuddle", "cry", "hug", "awoo", "kiss",
+    "lick", "pat", "smug", "bonk", "yeet", "blush", "smile", "wave", "highfive", "handhold",
+    "nom", "bite", "glomp", "slap", "kill", "kick", "happy", "wink", "poke", "dance", "cringe"
 ];
 
 const NSFW_TAGS = ["waifu", "neko", "trap", "blowjob"];
@@ -56,7 +56,7 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
                 />
             </Head>
-            
+
             <Script
                 type="text/javascript"
                 src="https://pl28306369.effectivegatecpm.com/4e/52/d0/4e52d0d6e7320408e43d59b629e39f0e.js"
@@ -86,12 +86,14 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
                     src="https://www.highperformanceformat.com/e751446441ee5b86993b7aaf0c991b61/invoke.js"
                     strategy="afterInteractive"
                 />
-                
-                <h1 className={styles.title}>{categoryTitle} Anime Images</h1>
+
+                <h1 className={styles.title}>
+                    <a href="..">{categoryTitle} Anime Images</a>
+                </h1>
                 <p className={styles.description}>
                     Browse {categoryTitle} waifu images from our curated collection
                 </p>
-                
+
                 <ImageContainer
                     darkMode={darkMode}
                     toggleDarkMode={toggleDarkMode}
@@ -99,7 +101,7 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
                     defaultCategory={category}
                     defaultApiType={apiType}
                 />
-                
+
                 <Script
                     type="text/javascript"
                     src="https://pl28306509.effectivegatecpm.com/c0/2e/ee/c02eeee6cfc41e9ec80e4e8832981771.js"
@@ -111,7 +113,7 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
 
 export async function getStaticPaths() {
     const allCategories = [...SFW_TAGS, ...NSFW_TAGS];
-    
+
     const paths = allCategories.map(category => ({
         params: { category }
     }));
@@ -125,7 +127,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
     const { category } = params;
     const apiType = SFW_TAGS.includes(category) ? "sfw" : "nsfw";
-    
+
     let initialImages = [];
     try {
         const response = await fetch(`https://api.waifu.pics/many/${apiType}/${category}`, {
@@ -140,7 +142,7 @@ export async function getStaticProps({ params }) {
     }
 
     const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
-    
+
     const jsonLdData = {
         "@context": "https://schema.org",
         "@graph": [

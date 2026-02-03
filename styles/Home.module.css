@@ -34,17 +34,22 @@
   color: #aaa;
 }
 
+.darkMode .categoryTitle {
+  color: #f1f1f1;
+}
+
 .darkMode .categoryLinks {
-  display: flex;
   color: white;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
+}
+
+.categoryTitle {
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .categoryLinks {
   display: flex;
+  flex-wrap: wrap;
   color: black;
   justify-content: center;
   align-items: center;
@@ -54,8 +59,6 @@
 
 @media (max-width: 768px) {
   .categoryLinks {
-    flex-direction: column;
-    align-items: start;
     gap: 10px;
   }
 }

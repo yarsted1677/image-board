@@ -82,12 +82,38 @@ export default function Home({ jsonLdData, initialImages }) {
                     Explore 30+ anime categories with thousands of waifu images. Browse neko, shinobu, megumin and more!
                 </p>
 
+                <h2 className={styles.categoryTitle}>Popular Categories:</h2>
                 <div className={styles.categoryLinks}>
-                    <h2>Popular Categories:</h2>
-                    <a href="/neko">Neko</a> |
-                    <a href="/waifu">Waifu</a> |
-                    <a href="/shinobu">Shinobu</a> |
-                    <a href="/megumin">Megumin</a>
+                    <a href="/neko" title="Browse Neko Anime Images">Neko</a>
+                    <a href="/waifu" title="Browse Waifu Images">Waifu</a>
+                    <a href="/shinobu" title="Browse Shinobu Images">Shinobu</a>
+                    <a href="/megumin" title="Browse Megumin Images">Megumin</a>
+                    <a href="/bully" title="Browse Bully Images">Bully</a>
+                    <a href="/cuddle" title="Browse Cuddle Images">Cuddle</a>
+                    <a href="/cry" title="Browse Cry Images">Cry</a>
+                    <a href="/hug" title="Browse Hug Images">Hug</a>
+                    <a href="/awoo" title="Browse Awoo Images">Awoo</a>
+                    <a href="/kiss" title="Browse Kiss Images">Kiss</a>
+                    <a href="/lick" title="Browse Lick Images">Lick</a>
+                    <a href="/pat" title="Browse Pat Images">Pat</a>
+                    <a href="/smug" title="Browse Smug Images">Smug</a>
+                    <a href="/bonk" title="Browse Bonk Images">Bonk</a>
+                    <a href="/yeet" title="Browse Yeet Images">Yeet</a>
+                    <a href="/blush" title="Browse Blush Images">Blush</a>
+                    <a href="/smile" title="Browse Smile Images">Smile</a>
+                    <a href="/wave" title="Browse Wave Images">Wave</a>
+                    <a href="/highfive" title="Browse Highfive Images">Highfive</a>
+                    <a href="/handhold" title="Browse Handhold Images">Handhold</a>
+                    <a href="/nom" title="Browse Nom Images">Nom</a>
+                    <a href="/bite" title="Browse Bite Images">Bite</a>
+                    <a href="/glomp" title="Browse Glomp Images">Glomp</a>
+                    <a href="/slap" title="Browse Slap Images">Slap</a>
+                    <a href="/kick" title="Browse Kick Images">Kick</a>
+                    <a href="/happy" title="Browse Happy Images">Happy</a>
+                    <a href="/wink" title="Browse Wink Images">Wink</a>
+                    <a href="/poke" title="Browse Poke Images">Poke</a>
+                    <a href="/dance" title="Browse Dance Images">Dance</a>
+                    <a href="/cringe" title="Browse Cringe Images">Cringe</a>
                 </div>
 
                 <ImageContainer
