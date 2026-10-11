@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import Script from "next/script";
 import ImageContainer from "../components/ImageContainer";
 import ContentCheck from "../components/ContentCheck";
 import styles from "../styles/Home.module.css";
+import { AVAILABLE_SFW_TAGS } from "../lib/image-categories.mjs";
+import { getImages } from "../lib/image-provider.mjs";
 
 
 export default function Home({ jsonLdData, initialImages }) {
@@ -20,7 +22,7 @@ export default function Home({ jsonLdData, initialImages }) {
                 <title>Anime Image Board - Free Waifu Gallery & Anime Art Collection</title>
                 <meta
                     name="description"
-                    content="The ultimate anime image board featuring 30+ categories. Discover neko, waifu, shinobu and more anime artwork. Daily updated gallery with thousands of images."
+                    content="Browse anime images and GIFs across multiple categories. Discover neko, waifu, shinobu and more anime artwork."
                 />
                 <meta name="google-site-verification" content="bVP-jy034Vc_iLAOUtk93hs9h2GpnJG-0cMjHh3AtmU" />
                 <link rel="icon" href="/favicon.ico" />
@@ -31,10 +33,10 @@ export default function Home({ jsonLdData, initialImages }) {
                 <meta name="author" content="TopWaifu" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content="Anime Image Board - Free Waifu Gallery & Anime Art Collection" />
-                <meta name="twitter:description" content="The ultimate anime image board featuring 30+ categories. Discover neko, waifu, shinobu and more anime artwork. Daily updated gallery with thousands of images." />
+                <meta name="twitter:description" content="Browse anime images and GIFs across multiple categories. Discover neko, waifu, shinobu and more anime artwork." />
 
                 <meta property="og:title" content="Anime Image Board - Free Waifu Gallery & Anime Art Collection" />
-                <meta property="og:description" content="The ultimate anime image board featuring 30+ categories. Discover neko, waifu, shinobu and more anime artwork. Daily updated gallery with thousands of images." />
+                <meta property="og:description" content="Browse anime images and GIFs across multiple categories. Discover neko, waifu, shinobu and more anime artwork." />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content="https://image-board-indol.vercel.app" />
                 <meta property="og:image" content="https://image-board-indol.vercel.app/og-image.png" />
@@ -79,41 +81,16 @@ export default function Home({ jsonLdData, initialImages }) {
                 />
                 <h1 className={styles.title}>Ultimate Anime Image Board</h1>
                 <p className={styles.description}>
-                    Explore 30+ anime categories with thousands of waifu images. Browse neko, shinobu, megumin and more!
+                    Explore anime images and GIFs. Browse neko, shinobu, megumin and more!
                 </p>
 
                 <h2 className={styles.categoryTitle}>Popular Categories:</h2>
                 <div className={styles.categoryLinks}>
-                    <a href="/neko" title="Browse Neko Anime Images">Neko</a>
-                    <a href="/waifu" title="Browse Waifu Images">Waifu</a>
-                    <a href="/shinobu" title="Browse Shinobu Images">Shinobu</a>
-                    <a href="/megumin" title="Browse Megumin Images">Megumin</a>
-                    <a href="/bully" title="Browse Bully Images">Bully</a>
-                    <a href="/cuddle" title="Browse Cuddle Images">Cuddle</a>
-                    <a href="/cry" title="Browse Cry Images">Cry</a>
-                    <a href="/hug" title="Browse Hug Images">Hug</a>
-                    <a href="/awoo" title="Browse Awoo Images">Awoo</a>
-                    <a href="/kiss" title="Browse Kiss Images">Kiss</a>
-                    <a href="/lick" title="Browse Lick Images">Lick</a>
-                    <a href="/pat" title="Browse Pat Images">Pat</a>
-                    <a href="/smug" title="Browse Smug Images">Smug</a>
-                    <a href="/bonk" title="Browse Bonk Images">Bonk</a>
-                    <a href="/yeet" title="Browse Yeet Images">Yeet</a>
-                    <a href="/blush" title="Browse Blush Images">Blush</a>
-                    <a href="/smile" title="Browse Smile Images">Smile</a>
-                    <a href="/wave" title="Browse Wave Images">Wave</a>
-                    <a href="/highfive" title="Browse Highfive Images">Highfive</a>
-                    <a href="/handhold" title="Browse Handhold Images">Handhold</a>
-                    <a href="/nom" title="Browse Nom Images">Nom</a>
-                    <a href="/bite" title="Browse Bite Images">Bite</a>
-                    <a href="/glomp" title="Browse Glomp Images">Glomp</a>
-                    <a href="/slap" title="Browse Slap Images">Slap</a>
-                    <a href="/kick" title="Browse Kick Images">Kick</a>
-                    <a href="/happy" title="Browse Happy Images">Happy</a>
-                    <a href="/wink" title="Browse Wink Images">Wink</a>
-                    <a href="/poke" title="Browse Poke Images">Poke</a>
-                    <a href="/dance" title="Browse Dance Images">Dance</a>
-                    <a href="/cringe" title="Browse Cringe Images">Cringe</a>
+                    {AVAILABLE_SFW_TAGS.map(tag => (
+                        <a key={tag} href={`/${tag}`} title={`Browse ${tag} Anime Images`}>
+                            {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                        </a>
+                    ))}
                 </div>
 
                 <ImageContainer
@@ -134,13 +111,7 @@ export default function Home({ jsonLdData, initialImages }) {
 export async function getStaticProps() {
     let initialImages = [];
     try {
-        const response = await fetch("https://api.waifu.pics/many/sfw/neko", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: 30 }),
-        });
-        const data = await response.json();
-        initialImages = data.files || [];
+        initialImages = await getImages();
     } catch (error) {
         console.error("Error pre-fetching images:", error);
     }
@@ -151,7 +122,7 @@ export async function getStaticProps() {
         "name": "Anime Image Board",
         "alternateName": "TopWaifu Gallery",
         "url": "https://image-board-indol.vercel.app",
-        "description": "The ultimate anime image board with 30+ categories including neko, waifu, shinobu and more.",
+        "description": "Anime images and GIFs across multiple categories including neko, waifu, shinobu and more.",
         "author": {
             "@type": "Organization",
             "name": "TopWaifu"

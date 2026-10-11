@@ -1,140 +1,112 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "../styles/ImageContainer.module.css";
-
-const SFW_TAGS = [
-    "waifu","neko","shinobu","megumin","bully","cuddle","cry","hug","awoo","kiss",
-    "lick","pat","smug","bonk","yeet","blush","smile","wave","highfive","handhold",
-    "nom","bite","glomp","slap","kill","kick","happy","wink","poke","dance","cringe"
-];
-
-const NSFW_TAGS = ["waifu", "neko", "trap", "blowjob"];
+import { SFW_TAGS, NSFW_TAGS, isAvailableCategory, unavailableMessage } from "../lib/image-categories.mjs";
 
 const ImageContainer = ({ darkMode, toggleDarkMode, initialImages = [], defaultCategory = "neko", defaultApiType = "sfw" }) => {
     const [apiType, setApiType] = useState(defaultApiType);
     const [apiCategory, setApiCategory] = useState(defaultCategory);
     const [images, setImages] = useState(initialImages);
-    const [fetchedImagesSet, setFetchedImagesSet] = useState(new Set(initialImages));
     const [loading, setLoading] = useState(false);
-    const IMAGES_PER_REQUEST = 30;
-    
-    // Ref to track if it's the first render
+    const [error, setError] = useState("");
+    const [notice, setNotice] = useState("");
+    const knownImages = useRef(new Set(initialImages));
+    const page = useRef(initialImages.length > 0 ? 1 : 0);
+    const activeRequest = useRef(null);
     const isFirstRun = useRef(true);
+    const available = isAvailableCategory(apiType, apiCategory);
 
-    // Fetch images from the waifu.pics API
     async function fetchMoreImages() {
+        if (!available || activeRequest.current) return;
+        const controller = new AbortController();
+        activeRequest.current = controller;
+        setLoading(true);
+        setError("");
+        setNotice("");
         try {
-            setLoading(true);
-            const response = await fetch(
-                `https://api.waifu.pics/many/${apiType}/${apiCategory}`,
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        amount: IMAGES_PER_REQUEST,
-                    }),
-                }
-            );
+            const query = new URLSearchParams({ type: apiType, category: apiCategory, page: String(page.current) });
+            const response = await fetch(`/api/images?${query}`, { signal: controller.signal });
             const data = await response.json();
-
-            if (!data || !data.files) return;
-
-            // Filter out duplicates
-            const newImages = data.files.filter(
-                (url) => !fetchedImagesSet.has(url)
-            );
-
-            // Update the set of known images
-            const updatedFetchedSet = new Set(fetchedImagesSet);
-            newImages.forEach((img) => updatedFetchedSet.add(img));
-            setFetchedImagesSet(updatedFetchedSet);
-
-            // Append new (non-duplicate) images
-            setImages((prev) => [...prev, ...newImages]);
+            if (!response.ok) throw new Error(data.error || "Images could not be loaded. Please try again.");
+            if (!Array.isArray(data.files)) throw new Error("Unexpected image response. Please try again.");
+            if (controller.signal.aborted) return;
+            const newImages = data.files.filter(url => {
+                if (knownImages.current.has(url)) return false;
+                knownImages.current.add(url);
+                return true;
+            });
+            page.current += 1;
+            setImages(previous => [...previous, ...newImages]);
+            if (newImages.length === 0) setNotice("No new images found. Try again or select another tag.");
         } catch (error) {
-            console.error("Error fetching images:", error);
+            if (!controller.signal.aborted) setError(error.message);
         } finally {
-            setLoading(false);
+            if (activeRequest.current === controller) {
+                activeRequest.current = null;
+                setLoading(false);
+            }
         }
     }
 
-    // Clear images when switching type or category
     useEffect(() => {
-        // If it's the first run and we have initial images, skip the fetch
-        // ASSUMPTION: initialImages corresponds to sfw/neko (the defaults)
         if (isFirstRun.current) {
             isFirstRun.current = false;
-            if (initialImages.length > 0) {
-                return;
-            }
+            if (initialImages.length > 0) return () => activeRequest.current?.abort();
         }
-        
+        activeRequest.current?.abort();
+        activeRequest.current = null;
+        knownImages.current = new Set();
+        page.current = 0;
         setImages([]);
-        setFetchedImagesSet(new Set());
+        setError("");
+        setNotice("");
+        setLoading(false);
         fetchMoreImages();
+        return () => activeRequest.current?.abort();
     }, [apiType, apiCategory]);
+
+    function changeType(type) {
+        setApiType(type);
+        if (!isAvailableCategory(type, apiCategory)) setApiCategory("neko");
+    }
 
     return (
         <div className={`${styles.mainContainer} ${darkMode ? styles.darkMode : ''}`}>
             <div className={styles.controls}>
                 <div className={styles.filterGroup}>
                     <label htmlFor="type-select">Type: </label>
-                    <select
-                        id="type-select"
-                        value={apiType}
-                        onChange={(e) => setApiType(e.target.value)}
-                        className={styles.select}
-                    >
+                    <select id="type-select" value={apiType} onChange={e => changeType(e.target.value)} className={styles.select}>
                         <option value="sfw">SFW</option>
-                        <option value="nsfw">NSFW</option>
+                        <option value="nsfw" disabled>NSFW (temporarily unavailable)</option>
                     </select>
                 </div>
-                
                 <div className={styles.filterGroup}>
                     <label htmlFor="tag-select">Tag: </label>
-                    <select
-                        id="tag-select"
-                        value={apiCategory}
-                        onChange={(e) => setApiCategory(e.target.value)}
-                        className={styles.select}
-                    >
-                        {(apiType === "sfw" ? SFW_TAGS : NSFW_TAGS).map((tag) => (
-                            <option key={tag} value={tag}>
-                                {tag}
+                    <select id="tag-select" value={apiCategory} onChange={e => setApiCategory(e.target.value)} className={styles.select}>
+                        {(apiType === "sfw" ? SFW_TAGS : NSFW_TAGS).map(tag => (
+                            <option key={tag} value={tag} disabled={!isAvailableCategory(apiType, tag)}>
+                                {tag}{!isAvailableCategory(apiType, tag) ? " (temporarily unavailable)" : ""}
                             </option>
                         ))}
                     </select>
                 </div>
-                
-                <button 
-                    onClick={toggleDarkMode} 
-                    className={styles.darkModeToggle}
-                >
+                <button onClick={toggleDarkMode} className={styles.darkModeToggle}>
                     {darkMode ? "Light Mode" : "Dark Mode"}
                 </button>
             </div>
-            
-            {images.length === 0 && loading && (
-                <div className={styles.loading}>Loading images...</div>
-            )}
-            
+            {!available && <p className={styles.loading} role="status">{unavailableMessage(apiType)}</p>}
+            {error && <p className={styles.loading} role="alert">{error}</p>}
+            {notice && <p className={styles.loading} role="status">{notice}</p>}
+            {images.length === 0 && loading && <div className={styles.loading}>Loading images...</div>}
             <div className={styles.container}>
                 {images.map((src, index) => (
-                    <div key={index} className={styles.imageCard}>
-                        <img 
-                            src={src} 
-                            alt={`${apiCategory} ${index}`} 
-                            onClick={() => window.open(src, "_blank")}
-                        />
+                    <div key={src} className={styles.imageCard}>
+                        <img src={src} alt={`${apiCategory} ${index}`} loading="lazy"
+                            onClick={() => window.open(src, "_blank", "noopener,noreferrer")} />
                     </div>
                 ))}
             </div>
-            
             <div className={styles.loadMoreContainer}>
-                <button 
-                    onClick={fetchMoreImages} 
-                    className={styles.loadMoreButton}
-                    disabled={loading}
-                >
+                <button onClick={fetchMoreImages} className={styles.loadMoreButton} disabled={loading || !available}>
                     {loading ? "Loading..." : "Load More Images"}
                 </button>
             </div>

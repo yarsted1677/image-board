@@ -4,14 +4,8 @@ import Script from "next/script";
 import ImageContainer from "../components/ImageContainer";
 import ContentCheck from "../components/ContentCheck";
 import styles from "../styles/Home.module.css";
-
-const SFW_TAGS = [
-    "waifu", "neko", "shinobu", "megumin", "bully", "cuddle", "cry", "hug", "awoo", "kiss",
-    "lick", "pat", "smug", "bonk", "yeet", "blush", "smile", "wave", "highfive", "handhold",
-    "nom", "bite", "glomp", "slap", "kill", "kick", "happy", "wink", "poke", "dance", "cringe"
-];
-
-const NSFW_TAGS = ["waifu", "neko", "trap", "blowjob"];
+import { SFW_TAGS, NSFW_TAGS, isAvailableCategory } from "../lib/image-categories.mjs";
+import { getImages } from "../lib/image-provider.mjs";
 
 export default function CategoryPage({ jsonLdData, initialImages, category, apiType }) {
     const [darkMode, setDarkMode] = useState(true);
@@ -34,7 +28,7 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
                 <link rel="icon" href="/favicon.ico" />
 
                 <meta name="keywords" content={`${category} anime, ${category} images, ${category} waifu, ${category} art, ${category} gallery, ${category} anime pictures`} />
-                <meta name="robots" content="index, follow" />
+                <meta name="robots" content={isAvailableCategory(apiType, category) ? "index, follow" : "noindex, follow"} />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <meta name="author" content="TopWaifu" />
 
@@ -95,6 +89,7 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
                 </p>
 
                 <ImageContainer
+                    key={category}
                     darkMode={darkMode}
                     toggleDarkMode={toggleDarkMode}
                     initialImages={initialImages}
@@ -112,7 +107,7 @@ export default function CategoryPage({ jsonLdData, initialImages, category, apiT
 }
 
 export async function getStaticPaths() {
-    const allCategories = [...SFW_TAGS, ...NSFW_TAGS];
+    const allCategories = [...new Set([...SFW_TAGS, ...NSFW_TAGS])];
 
     const paths = allCategories.map(category => ({
         params: { category }
@@ -130,13 +125,9 @@ export async function getStaticProps({ params }) {
 
     let initialImages = [];
     try {
-        const response = await fetch(`https://api.waifu.pics/many/${apiType}/${category}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: 30 }),
-        });
-        const data = await response.json();
-        initialImages = data.files || [];
+        if (isAvailableCategory(apiType, category)) {
+            initialImages = await getImages({ type: apiType, category });
+        }
     } catch (error) {
         console.error("Error pre-fetching images:", error);
     }
