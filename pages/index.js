@@ -52,7 +52,7 @@ export default function Home({ jsonLdData, initialImages }) {
             </Head>
             <Script
                 type="text/javascript"
-                src="https://pl28306369.effectivegatecpm.com/4e/52/d0/4e52d0d6e7320408e43d59b629e39f0e.js"
+                src="https://pl28306369.profitableratecpmnetwork.com/4e/52/d0/4e52d0d6e7320408e43d59b629e39f0e.js"
                 strategy="afterInteractive"
             />
 
@@ -101,7 +101,7 @@ export default function Home({ jsonLdData, initialImages }) {
 
                 <Script
                     type="text/javascript"
-                    src="https://pl28306509.effectivegatecpm.com/c0/2e/ee/c02eeee6cfc41e9ec80e4e8832981771.js"
+                    src="https://pl28306509.profitableratecpmnetwork.com/c0/2e/ee/c02eeee6cfc41e9ec80e4e8832981771.js"
                 />
             </main>
         </div>
